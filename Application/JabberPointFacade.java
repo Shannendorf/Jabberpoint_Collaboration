@@ -2,6 +2,8 @@ package Application;
 
 import Domain.Presentation;
 import Domain.Slide;
+import Domain.Style;
+import Infrastructure.XMLAccessor;
 import UI.SlideViewerComponent;
 
 import java.io.IOException;
@@ -11,10 +13,12 @@ public class JabberPointFacade {
     private PresentationAccessorService presentationAccessor;
     private PresentationService presentationService;
 
-    public JabberPointFacade(Presentation pres, PresentationAccessorService presAccServ, PresentationService presServ) {
-        this.presentation = pres; //PresentationFactory.createPresentation();
-        this.presentationAccessor = presAccServ;
-        this.presentationService = presServ;
+    public JabberPointFacade() {
+        this.presentation = PresentationFactory.createPresentation(); //PresentationFactory.createPresentation();
+        this.presentationAccessor = new PresentationAccessorService(new XMLAccessor());
+        this.presentationService = new PresentationService();
+
+        Style.createStyles();
     }
 
     public String getTitle() {

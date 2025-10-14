@@ -32,13 +32,9 @@ public class JabberPoint {
 
 	/** Het Main Programma */
 	public static void main(String argv[]) {
-		
-		Style.createStyles();
-		Presentation presentation = PresentationFactory.createPresentation();
-        PresentationAccessorService presentationAccessorService = new PresentationAccessorService(new XMLAccessor());
-        PresentationService presentationService = new PresentationService();
-		JabberPointFacade jabberPointFacade = new JabberPointFacade(presentation, presentationAccessorService, presentationService);
-		new SlideViewerFrame(JABVERSION, presentation, presentationAccessorService, presentationService, jabberPointFacade);
+
+		JabberPointFacade jabberPointFacade = new JabberPointFacade();
+		new SlideViewerFrame(JABVERSION, jabberPointFacade);
 		try {
 //			if (argv.length == 0) { // een demo presentatie
 //				Accessor.getDemoAccessor().loadFile(presentation, "");

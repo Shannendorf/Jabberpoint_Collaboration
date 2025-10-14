@@ -2,7 +2,6 @@ package UI;
 
 import Application.JabberPointFacade;
 import Domain.ClickableSlideItem;
-import Domain.Presentation;
 import Domain.Slide;
 import Domain.SlideItem;
 
@@ -31,7 +30,6 @@ public class SlideViewerComponent extends JComponent {
 		
 	private Slide slide; // de huidige slide
 	private Font labelFont = null; // het font voor labels
-	private Presentation presentation = null; // de presentatie
 	private JabberPointFacade jabberPointFacade;
 	private JFrame frame = null;
 	
@@ -45,9 +43,8 @@ public class SlideViewerComponent extends JComponent {
 	private static final int XPOS = 1100;
 	private static final int YPOS = 20;
 
-	public SlideViewerComponent(Presentation pres, JFrame frame, JabberPointFacade jabberPointFacade) {
-		setBackground(BGCOLOR); 
-		presentation = pres;
+	public SlideViewerComponent(JFrame frame, JabberPointFacade jabberPointFacade) {
+		setBackground(BGCOLOR);
 		labelFont = new Font(FONTNAME, FONTSTYLE, FONTHEIGHT);
 		this.frame = frame;
 		this.jabberPointFacade = jabberPointFacade;

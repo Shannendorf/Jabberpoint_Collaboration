@@ -1,9 +1,6 @@
 package UI;
 
 import Application.JabberPointFacade;
-import Application.PresentationAccessorService;
-import Application.PresentationService;
-import Domain.Presentation;
 
 import java.awt.Dimension;
 import java.awt.event.WindowEvent;
@@ -30,17 +27,17 @@ public class SlideViewerFrame extends JFrame {
 
 	private JabberPointFacade jabberPointFacade;
 	
-	public SlideViewerFrame(String title, Presentation presentation, PresentationAccessorService presentationAccessor, PresentationService presentationService, JabberPointFacade facade) {
+	public SlideViewerFrame(String title, JabberPointFacade facade) {
 		super(title);
 		this.jabberPointFacade = facade;
-		SlideViewerComponent slideViewerComponent = new SlideViewerComponent(presentation, this, jabberPointFacade);
+		SlideViewerComponent slideViewerComponent = new SlideViewerComponent(this, jabberPointFacade);
 		jabberPointFacade.setShowView(slideViewerComponent);
-		setupWindow(slideViewerComponent, presentation, presentationAccessor, presentationService, jabberPointFacade);
+		setupWindow(slideViewerComponent, jabberPointFacade);
 	}
 
 // De GUI opzetten
 	public void setupWindow(SlideViewerComponent 
-			slideViewerComponent, Presentation presentation, PresentationAccessorService presentationAccessor, PresentationService presentationService, JabberPointFacade jabberPointFacade) {
+			slideViewerComponent, JabberPointFacade jabberPointFacade) {
 		setTitle(JABTITLE);
 		addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent e) {
