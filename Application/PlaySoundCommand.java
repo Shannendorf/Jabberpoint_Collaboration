@@ -17,14 +17,14 @@ public class PlaySoundCommand extends PresentationCommand {
     @Override
     public void execute() {
         //Moet getest worden, niet zeker of dit werkt - Tibo
-        try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource(soundUrl));
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
-            clip.stop();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        //try {
+            //AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource(soundUrl));
+            //Clip clip = AudioSystem.getClip();
+            //clip.open(audioInputStream);
+            //clip.start();
+            //clip.stop();
+        //} catch (Exception ex) {
+            //ex.printStackTrace();
+        //}
     }
 }

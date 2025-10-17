@@ -16,6 +16,14 @@ public class ClickableSlideItem extends SlideItem{
         this.childItem = childItem;
         this.command = command;
     }
+    
+    public Command getCommand(){
+        return command;
+    }
+
+    public SlideItem getChild(){
+        return childItem;
+    }
 
     @Override
     public Rectangle getBoundingBox() {

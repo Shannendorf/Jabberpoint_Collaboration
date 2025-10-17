@@ -27,14 +27,33 @@ public class DefaultSlideItemFactory implements SlideItemFactory {
                 return new BitmapItem(level, element.getTextContent());
             }
             case "action" -> {
+                CompositeCommand compositeCommand = new CompositeCommand();
+
                 String actionName = element.getAttribute("name");
-                Command command = mapActionNameToCommand(actionName);
+                if (!actionName.isEmpty()) {
+                    Command mainCommand = mapActionNameToCommand(actionName);
+                    if (mainCommand != null) {
+                        compositeCommand.add(mainCommand);
+                    }
+                }
 
                 NodeList children = element.getChildNodes();
+                SlideItem childItem = null;
+
                 for (int i = 0; i < children.getLength(); i++) {
                     if (children.item(i) instanceof Element childElement) {
-                        SlideItem childItem = createSlideItem(childElement);
-                        return new ClickableSlideItem(childItem, command);
+                    	
+                        String recursiveTag = childElement.getTagName();
+
+                        if (recursiveTag.equals("action")) {
+                            SlideItem nestedClickable = createSlideItem(childElement);
+                            if (nestedClickable instanceof ClickableSlideItem clickable) {
+                                compositeCommand.add(clickable.getCommand());
+                                childItem = clickable.getChild();
+                            }
+                        } else {
+                            childItem = createSlideItem(childElement);
+                        }
                     }
                 }
             }
