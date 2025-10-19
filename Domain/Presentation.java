@@ -86,6 +86,13 @@ public class Presentation {
 		showList.add(slide);
 	}
 
+	// Voeg een lege slide toe aan de presentatie
+	public void addEmptySlide()
+	{
+		Slide slide = new Slide();
+		showList.add(slide);
+	}
+
 	// Geef een slide met een bepaald slidenummer
 	public Slide getSlide(int number) {
 		if (number < 0 || number >= getSize()){
