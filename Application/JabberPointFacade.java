@@ -57,10 +57,6 @@ public class JabberPointFacade {
         this.presentationService.setSlideNumber(this.presentation, slideNumber);
     }
 
-    public void setShowView(SlideViewerComponent slideViewerComponent) {
-        this.presentation.setShowView(slideViewerComponent);
-    }
-
     public void loadFile(String fileName) throws IOException {
         this.presentationAccessor.loadFile(this.presentation, fileName);
     }
@@ -71,6 +67,10 @@ public class JabberPointFacade {
 
     public void exit(int n) {
         this.presentationService.exit(this.presentation, n);
+    }
+
+    public void subscribe(PresentationSubscriber subscriber) {
+        this.presentation.subscribe(subscriber);
     }
 
 }
