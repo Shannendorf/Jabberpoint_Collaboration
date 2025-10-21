@@ -2,7 +2,7 @@ package UI;
 
 import Application.JabberPointFacade;
 import Application.PresentationSubscriber;
-import Domain.ClickableSlideItem;
+import Domain.InteractableSlideItem;
 import Domain.Slide;
 import Domain.SlideItem;
 
@@ -66,7 +66,7 @@ public class SlideViewerComponent extends JComponent implements PresentationSubs
         if (currentSlide == null) return;
 
         for (SlideItem item : currentSlide.getSlideItems()) {
-            if (item instanceof ClickableSlideItem clickable) {
+            if (item instanceof InteractableSlideItem clickable) {
                 if (clickable.isClicked(e.getX(), e.getY())) {
                     clickable.onClick();
                     break;
