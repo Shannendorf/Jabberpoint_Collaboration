@@ -12,6 +12,7 @@ public class InteractableSlideItemBuilder {
 	
 	public InteractableSlideItemBuilder(Presentation presentation) {
 		compositeCommand = new CompositeCommand();
+        this.presentation = presentation;
 	}
 	
 	public void addCommand(String name) {

@@ -5,13 +5,13 @@ import Application.Command;
 import java.awt.*;
 import java.awt.image.ImageObserver;
 
-public class ClickableSlideItem extends SlideItem{
+public class InteractableSlideItem extends SlideItem {
 
     private final SlideItem childItem;
     private final Command command;
     private Rectangle boundingBox;
 
-    public ClickableSlideItem(SlideItem childItem, Command command) {
+    public InteractableSlideItem(SlideItem childItem, Command command) {
         super(childItem.getLevel());
         this.childItem = childItem;
         this.command = command;
