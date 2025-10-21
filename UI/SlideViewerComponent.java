@@ -1,6 +1,7 @@
 package UI;
 
 import Application.JabberPointFacade;
+import Application.PresentationSubscriber;
 import Domain.ClickableSlideItem;
 import Domain.Slide;
 import Domain.SlideItem;
@@ -26,7 +27,7 @@ import javax.swing.event.MouseInputAdapter;
  * @version 1.6 2014/05/16 Sylvia Stuurman
  */
 
-public class SlideViewerComponent extends JComponent {
+public class SlideViewerComponent extends JComponent implements PresentationSubscriber {
 		
 	private Slide slide; // de huidige slide
 	private Font labelFont = null; // het font voor labels
@@ -48,6 +49,7 @@ public class SlideViewerComponent extends JComponent {
 		labelFont = new Font(FONTNAME, FONTSTYLE, FONTHEIGHT);
 		this.frame = frame;
 		this.jabberPointFacade = jabberPointFacade;
+		jabberPointFacade.subscribe((PresentationSubscriber) this);
 
         MouseInputAdapter mouseHandler = new MouseInputAdapter() {
             @Override
@@ -77,16 +79,6 @@ public class SlideViewerComponent extends JComponent {
 		return new Dimension(Slide.WIDTH, Slide.HEIGHT);
 	}
 
-	public void update(Slide data) {
-		if (data == null) {
-			repaint();
-			return;
-		}
-		this.slide = data;
-		repaint();
-		frame.setTitle(jabberPointFacade.getTitle());
-	}
-
 // teken de slide
 	public void paintComponent(Graphics g) {
 		g.setColor(BGCOLOR);
@@ -100,5 +92,11 @@ public class SlideViewerComponent extends JComponent {
                  jabberPointFacade.getSize(), XPOS, YPOS);
 		Rectangle area = new Rectangle(0, YPOS, getWidth(), (getHeight() - YPOS));
 		slide.draw(g, area, this);
+	}
+
+	public void notifySlideChange() {
+		this.slide = jabberPointFacade.getCurrentSlide();
+		repaint();
+		frame.setTitle(jabberPointFacade.getTitle());
 	}
 }

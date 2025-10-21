@@ -31,7 +31,6 @@ public class SlideViewerFrame extends JFrame {
 		super(title);
 		this.jabberPointFacade = facade;
 		SlideViewerComponent slideViewerComponent = new SlideViewerComponent(this, jabberPointFacade);
-		jabberPointFacade.setShowView(slideViewerComponent);
 		setupWindow(slideViewerComponent, jabberPointFacade);
 	}
 

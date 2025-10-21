@@ -1,6 +1,6 @@
 package Domain;
 
-import UI.SlideViewerComponent;
+import Application.PresentationSubscriber;
 
 import java.util.ArrayList;
 
@@ -21,16 +21,21 @@ public class Presentation {
 	private String showTitle; // de titel van de presentatie
 	private ArrayList<Slide> showList = null; // een ArrayList met de Slides
 	private int currentSlideNumber = 0; // het slidenummer van de huidige Slide
-	private SlideViewerComponent slideViewComponent = null; // de viewcomponent voor de Slides
+	private ArrayList<PresentationSubscriber> subscribers;
 
 	public Presentation() {
-		slideViewComponent = null;
+		subscribers = new ArrayList<PresentationSubscriber>();
 		clear();
 	}
 
-	public Presentation(SlideViewerComponent slideViewerComponent) {
-		this.slideViewComponent = slideViewerComponent;
-		clear();
+	public void subscribe(PresentationSubscriber subscriber) {
+		this.subscribers.add(subscriber);
+	}
+
+	private void notifySubscribers() {
+		for (PresentationSubscriber subscriber: subscribers) {
+			subscriber.notifySlideChange();
+		}
 	}
 
 	public int getSize() {
@@ -45,10 +50,6 @@ public class Presentation {
 		showTitle = nt;
 	}
 
-	public void setShowView(SlideViewerComponent slideViewerComponent) {
-		this.slideViewComponent = slideViewerComponent;
-	}
-
 	// geef het nummer van de huidige slide
 	public int getSlideNumber() {
 		return currentSlideNumber;
@@ -57,9 +58,7 @@ public class Presentation {
 	// verander het huidige-slide-nummer en laat het aan het window weten.
 	public void setSlideNumber(int number) {
 		currentSlideNumber = number;
-		if (slideViewComponent != null) {
-			slideViewComponent.update(getCurrentSlide());
-		}
+		notifySubscribers();
 	}
 
 	// ga naar de vorige slide tenzij je aan het begin van de presentatie bent
@@ -84,6 +83,13 @@ public class Presentation {
 
 	// Voeg een slide toe aan de presentatie
 	public void append(Slide slide) {
+		showList.add(slide);
+	}
+
+	// Voeg een lege slide toe aan de presentatie
+	public void addEmptySlide()
+	{
+		Slide slide = new Slide();
 		showList.add(slide);
 	}
 

@@ -11,12 +11,10 @@ import java.io.IOException;
 public class JabberPointFacade {
     private Presentation presentation;
     private PresentationAccessorService presentationAccessor;
-    private PresentationService presentationService;
 
     public JabberPointFacade() {
         this.presentation = PresentationFactory.createPresentation(); //PresentationFactory.createPresentation();
         this.presentationAccessor = new PresentationAccessorService(new XMLAccessor());
-        this.presentationService = new PresentationService();
 
         Style.createStyles();
     }
@@ -30,11 +28,11 @@ public class JabberPointFacade {
     }
 
     public void nextSlide() {
-        this.presentationService.nextSlide(this.presentation);
+        this.presentation.nextSlide();
     }
 
     public void previousSlide() {
-        this.presentationService.previousSlide(this.presentation);
+        this.presentation.prevSlide();
     }
 
     public Slide getCurrentSlide() {
@@ -46,19 +44,15 @@ public class JabberPointFacade {
     }
 
     public void clearPresentation() {
-        this.presentationService.clearPresentation(this.presentation);
+        this.presentation.clear();
     }
 
     public void addEmptySlide() {
-        this.presentationService.addEmptySlide(this.presentation);
+        this.presentation.addEmptySlide();
     }
 
     public void setSlideNumber(int slideNumber) {
-        this.presentationService.setSlideNumber(this.presentation, slideNumber);
-    }
-
-    public void setShowView(SlideViewerComponent slideViewerComponent) {
-        this.presentation.setShowView(slideViewerComponent);
+        this.presentation.setSlideNumber(slideNumber);
     }
 
     public void loadFile(String fileName) throws IOException {
@@ -70,7 +64,11 @@ public class JabberPointFacade {
     }
 
     public void exit(int n) {
-        this.presentationService.exit(this.presentation, n);
+        this.presentation.exit(n);
+    }
+
+    public void subscribe(PresentationSubscriber subscriber) {
+        this.presentation.subscribe(subscriber);
     }
 
 }

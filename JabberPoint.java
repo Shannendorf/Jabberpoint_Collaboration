@@ -1,10 +1,4 @@
 import Application.JabberPointFacade;
-import Application.PresentationAccessorService;
-import Application.PresentationFactory;
-import Application.PresentationService;
-import Domain.Presentation;
-import Domain.Style;
-import Infrastructure.XMLAccessor;
 import UI.SlideViewerFrame;
 
 import javax.swing.JOptionPane;
