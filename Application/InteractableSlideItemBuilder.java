@@ -35,7 +35,7 @@ public class InteractableSlideItemBuilder {
             case "prev" -> new PreviousSlideCommand(presentation);
             case "first" -> new FirstSlideCommand(presentation);
             case "last" -> new LastSlideCommand(presentation);
-            case "beep" -> new PlaySoundCommand(presentation, "");
+            case "beep" -> new PlaySoundCommand(presentation, "blip.wav");
             default -> null;
         };
     }

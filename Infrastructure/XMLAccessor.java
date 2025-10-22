@@ -17,11 +17,8 @@ import Application.SlideBuilder;
 import Application.SlideItemFactory;
 import Application.TextItemFactory;
 import Domain.*;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.NodeList;
 
 
 /** Infrastructure.XMLAccessor, reads and writes XML files
@@ -117,27 +114,44 @@ public class XMLAccessor extends Accessor {
             case "action" -> {
                 InteractableSlideItemBuilder builder = new InteractableSlideItemBuilder(presentation);
 
-                String actionName = element.getAttribute("name");
-                if (!actionName.isEmpty()) {
-                    builder.addCommand(actionName);
-                }
-
-                NodeList children = element.getChildNodes();
-                for (int i = 0; i < children.getLength(); i++) {
-                    if (children.item(i) instanceof Element childElement) {
-                        SlideItem childItem = createSlideItem(presentation, childElement);
-                        builder.addBaseItem(childItem);
-                    }
-                }
+                // recursively collect commands and find the base item
+                collectActionsAndBase(element, builder, presentation);
 
                 return builder.createSlideItem();
             }
+
             default -> {
                 System.err.println("Unknown tag: " + tag);
                 return null;
             }
         }
     }
+
+    private void collectActionsAndBase(Element element, InteractableSlideItemBuilder builder, Presentation presentation) {
+        // Add this element's action command (if present)
+        String actionName = element.getAttribute("name");
+        if (actionName != null && !actionName.isEmpty()) {
+            builder.addCommand(actionName);
+        }
+
+        NodeList children = element.getChildNodes();
+        for (int i = 0; i < children.getLength(); i++) {
+            Node node = children.item(i);
+            if (!(node instanceof Element childElement)) continue;
+
+            String tag = childElement.getTagName();
+
+            if ("action".equalsIgnoreCase(tag)) {
+                // recurse to collect nested actions and ultimately the base item
+                collectActionsAndBase(childElement, builder, presentation);
+            } else {
+                // non-action: must be the base item (e.g., text, image, etc.)
+                SlideItem base = createSlideItem(presentation, childElement);
+                builder.addBaseItem(base);
+            }
+        }
+    }
+
 
     private int parseLevel(Element element) {
         String levelAttr = element.getAttribute("level");
