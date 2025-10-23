@@ -55,6 +55,11 @@ public class JabberPointFacade {
         this.presentation.setSlideNumber(slideNumber);
     }
 
+    public void handleSlideClick(int x, int y){
+        var currentSlide = this.presentation.getCurrentSlide();
+        currentSlide.handleClick(x, y);
+    }
+
     public void loadFile(String fileName) throws IOException {
         this.presentationAccessor.loadFile(this.presentation, fileName);
     }

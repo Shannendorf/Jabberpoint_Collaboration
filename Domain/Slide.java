@@ -81,4 +81,15 @@ public class Slide {
 	private float getScale(Rectangle area) {
 		return Math.min(((float)area.width) / ((float)WIDTH), ((float)area.height) / ((float)HEIGHT));
 	}
+
+    public void handleClick(int x, int y) {
+        for (SlideItem item : items) {
+            if (item instanceof InteractableSlideItem clickable) {
+                if (clickable.isClicked(x, y)) {
+                    clickable.onClick();
+                    break;
+                }
+            }
+        }
+    }
 }

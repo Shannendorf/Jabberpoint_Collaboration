@@ -62,17 +62,7 @@ public class SlideViewerComponent extends JComponent implements PresentationSubs
 	}
 
     private void handleMouseClick(MouseEvent e) {
-        Slide currentSlide = this.jabberPointFacade.getCurrentSlide();
-        if (currentSlide == null) return;
-
-        for (SlideItem item : currentSlide.getSlideItems()) {
-            if (item instanceof InteractableSlideItem clickable) {
-                if (clickable.isClicked(e.getX(), e.getY())) {
-                    clickable.onClick();
-                    break;
-                }
-            }
-        }
+        this.jabberPointFacade.handleSlideClick(e.getX(), e.getY());
     }
 
 	public Dimension getPreferredSize() {
