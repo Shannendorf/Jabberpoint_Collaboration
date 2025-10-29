@@ -18,6 +18,10 @@ public class CompositeCommand implements Command {
         commands.add(command);
     }
 
+    public ArrayList<Command> getCommands() {
+        return commands;
+    }
+
     @Override
     public void execute() {
         for (Command command : commands) {

@@ -1,5 +1,7 @@
 package Infrastructure;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.io.File;
 import java.io.IOException;
@@ -147,53 +149,6 @@ public class XMLAccessor extends Accessor {
         }
     }
 
-
-    private int parseLevel(Element element) {
-        String levelAttr = element.getAttribute("level");
-        try {
-            return (levelAttr == null || levelAttr.isEmpty()) ? 1 : Integer.parseInt(levelAttr);
-        } catch (NumberFormatException e) {
-            return 1; // fallback if malformed
-        }
-    }
-
-    public void saveFile(Presentation presentation, String filename) throws IOException {
-        PrintWriter out = new PrintWriter(new FileWriter(filename));
-        out.println("<?xml version=\"1.0\"?>");
-        out.println("<!DOCTYPE presentation SYSTEM \"jabberpoint.dtd\">");
-        out.println("<presentation>");
-        out.print("<showtitle>");
-        out.print(presentation.getTitle());
-        out.println("</showtitle>");
-        for (int slideNumber=0; slideNumber<presentation.getSize(); slideNumber++) {
-            Slide slide = presentation.getSlide(slideNumber);
-            out.println("<slide>");
-            out.println("<title>" + slide.getTitle() + "</title>");
-            Vector<SlideItem> slideItems = slide.getSlideItems();
-            for (int itemNumber = 0; itemNumber<slideItems.size(); itemNumber++) {
-                SlideItem slideItem = (SlideItem) slideItems.elementAt(itemNumber);
-                out.print("<item kind=");
-                if (slideItem instanceof TextItem) {
-                    out.print("\"text\" level=\"" + slideItem.getLevel() + "\">");
-                    out.print( ( (TextItem) slideItem).getText());
-                }
-                else {
-                    if (slideItem instanceof BitmapItem) {
-                        out.print("\"image\" level=\"" + slideItem.getLevel() + "\">");
-                        out.print( ( (BitmapItem) slideItem).getName());
-                    }
-                    else {
-                        System.out.println("Ignoring " + slideItem);
-                    }
-                }
-                out.println("</item>");
-            }
-            out.println("</slide>");
-        }
-        out.println("</presentation>");
-        out.close();
-    }
-
     private Command mapActionNameToCommand(String actionName, Presentation presentation) {
         return switch (actionName.toLowerCase()) {
             case "next" -> new NextSlideCommand(presentation);
@@ -203,5 +158,109 @@ public class XMLAccessor extends Accessor {
             case "beep" -> new PlaySoundCommand(presentation, "blip.wav");
             default -> null;
         };
+    }
+
+
+    private int parseLevel(Element element) {
+        String levelAttr = element.getAttribute("level");
+        try {
+            return (levelAttr == null || levelAttr.isEmpty()) ? 1 : Integer.parseInt(levelAttr);
+        } catch (NumberFormatException e) {
+            return 1;
+        }
+    }
+
+    @Override
+    public void saveFile(Presentation presentation, String filename) throws IOException {
+        try (PrintWriter out = new PrintWriter(new FileWriter(filename))) {
+            out.println("<?xml version=\"1.0\"?>");
+            out.println("<!DOCTYPE presentation SYSTEM \"jabberpoint.dtd\">");
+            out.println("<presentation>");
+            out.printf("    <showtitle>%s</showtitle>%n", escapeXml(presentation.getTitle()));
+
+            for (int slideIndex = 0; slideIndex < presentation.getSize(); slideIndex++) {
+                Slide slide = presentation.getSlide(slideIndex);
+
+                out.println();
+                out.printf("    <!-- Slide %d -->%n", slideIndex + 1);
+                out.println("    <slide>");
+                out.printf("        <title>%s</title>%n", escapeXml(slide.getTitle()));
+                out.println("        <items>");
+
+                for (SlideItem item : slide.getSlideItems()) {
+                    writeSlideItem(out, item, "            ");
+                }
+
+                out.println("        </items>");
+                out.println("    </slide>");
+            }
+
+            out.println("</presentation>");
+        }
+    }
+
+    private void writeSlideItem(PrintWriter out, SlideItem item, String indent) {
+        if (item instanceof TextItem textItem) {
+            out.printf("%s<text level=\"%d\">%s</text>%n",
+                    indent,
+                    textItem.getLevel(),
+                    escapeXml(textItem.getText()));
+        } else if (item instanceof BitmapItem imageItem) {
+            out.printf("%s<image level=\"%d\">%s</image>%n",
+                    indent,
+                    imageItem.getLevel(),
+                    escapeXml(imageItem.getName()));
+        } else if (item instanceof InteractableSlideItem interactable) {
+            ArrayList<Command> commands = new ArrayList<>();
+
+            if (interactable.getCommand() instanceof CompositeCommand composite) {
+                commands.addAll(composite.getCommands());
+            } else if (interactable.getCommand() != null) {
+                commands.add(interactable.getCommand());
+            }
+
+            SlideItem child = interactable.getChild();
+
+            writeActions(out, commands, child, indent);
+        } else {
+            System.err.println("Ignoring unknown slide item type: " + item.getClass().getSimpleName());
+        }
+    }
+
+    private void writeActions(PrintWriter out, ArrayList<Command> commands, SlideItem child, String indent) {
+        if (commands.isEmpty()) {
+            if (child != null) {
+                writeSlideItem(out, child, indent);
+            }
+            return;
+        }
+
+        Command command = commands.getFirst();
+        String actionName = mapCommandToActionName(command);
+
+        out.printf("%s<action name=\"%s\">%n", indent, escapeXml(actionName));
+
+        ArrayList<Command> remaining = new ArrayList<>(commands.subList(1, commands.size()));
+        writeActions(out, remaining, child, indent + "    ");
+
+        out.printf("%s</action>%n", indent);
+    }
+
+    private String mapCommandToActionName(Command cmd) {
+        if (cmd instanceof NextSlideCommand) return "next";
+        if (cmd instanceof PreviousSlideCommand) return "prev";
+        if (cmd instanceof FirstSlideCommand) return "first";
+        if (cmd instanceof LastSlideCommand) return "last";
+        if (cmd instanceof PlaySoundCommand) return "beep";
+        return "unknown";
+    }
+
+    private String escapeXml(String s) {
+        if (s == null) return "";
+        return s.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&apos;");
     }
 }
