@@ -10,12 +10,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import Application.BitmapItemFactory;
-import Application.InteractableSlideItemBuilder;
-import Application.OrdinarySlideFactory;
-import Application.SlideBuilder;
-import Application.SlideItemFactory;
-import Application.TextItemFactory;
+import Application.*;
 import Domain.*;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
@@ -113,9 +108,11 @@ public class XMLAccessor extends Accessor {
             }
             case "action" -> {
                 InteractableSlideItemBuilder builder = new InteractableSlideItemBuilder(presentation);
+                CompositeCommand compositeCommand = new CompositeCommand();
 
                 // recursively collect commands and find the base item
-                collectActionsAndBase(element, builder, presentation);
+                collectActionsAndBase(element, builder, compositeCommand, presentation);
+                builder.setCommand(compositeCommand);
 
                 return builder.createSlideItem();
             }
@@ -127,11 +124,11 @@ public class XMLAccessor extends Accessor {
         }
     }
 
-    private void collectActionsAndBase(Element element, InteractableSlideItemBuilder builder, Presentation presentation) {
-        // Add this element's action command (if present)
+    private void collectActionsAndBase(Element element, InteractableSlideItemBuilder builder, CompositeCommand compositeCommand, Presentation presentation) {
         String actionName = element.getAttribute("name");
         if (actionName != null && !actionName.isEmpty()) {
-            builder.addCommand(actionName);
+            Command command = mapActionNameToCommand(actionName, presentation);
+            compositeCommand.add(command);
         }
 
         NodeList children = element.getChildNodes();
@@ -142,12 +139,10 @@ public class XMLAccessor extends Accessor {
             String tag = childElement.getTagName();
 
             if ("action".equalsIgnoreCase(tag)) {
-                // recurse to collect nested actions and ultimately the base item
-                collectActionsAndBase(childElement, builder, presentation);
+                collectActionsAndBase(childElement, builder, compositeCommand, presentation);
             } else {
-                // non-action: must be the base item (e.g., text, image, etc.)
                 SlideItem base = createSlideItem(presentation, childElement);
-                builder.addBaseItem(base);
+                builder.setBaseItem(base);
             }
         }
     }
@@ -197,5 +192,16 @@ public class XMLAccessor extends Accessor {
         }
         out.println("</presentation>");
         out.close();
+    }
+
+    private Command mapActionNameToCommand(String actionName, Presentation presentation) {
+        return switch (actionName.toLowerCase()) {
+            case "next" -> new NextSlideCommand(presentation);
+            case "prev" -> new PreviousSlideCommand(presentation);
+            case "first" -> new FirstSlideCommand(presentation);
+            case "last" -> new LastSlideCommand(presentation);
+            case "beep" -> new PlaySoundCommand(presentation, "blip.wav");
+            default -> null;
+        };
     }
 }

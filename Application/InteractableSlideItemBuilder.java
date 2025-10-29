@@ -6,37 +6,23 @@ import Domain.SlideItem;
 
 public class InteractableSlideItemBuilder {
 
-	CompositeCommand compositeCommand;
+	Command command;
 	Presentation presentation;
 	SlideItem baseItem;
 	
 	public InteractableSlideItemBuilder(Presentation presentation) {
-		compositeCommand = new CompositeCommand();
         this.presentation = presentation;
 	}
 	
-	public void addCommand(String name) {
-		Command command = mapActionNameToCommand(name);
-		compositeCommand.add(command);
+	public void setCommand(Command command) {
+		this.command = command;
 	}
 	
-	public void addBaseItem(SlideItem item) {
+	public void setBaseItem(SlideItem item) {
 		baseItem = item;
 	}
 	
 	public SlideItem createSlideItem() {
-		return new InteractableSlideItem(baseItem, compositeCommand);
+		return new InteractableSlideItem(baseItem, command);
 	}
-
-	
-	private Command mapActionNameToCommand(String actionName) {
-        return switch (actionName.toLowerCase()) {
-            case "next" -> new NextSlideCommand(presentation);
-            case "prev" -> new PreviousSlideCommand(presentation);
-            case "first" -> new FirstSlideCommand(presentation);
-            case "last" -> new LastSlideCommand(presentation);
-            case "beep" -> new PlaySoundCommand(presentation, "blip.wav");
-            default -> null;
-        };
-    }
 }
