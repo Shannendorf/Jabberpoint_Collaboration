@@ -9,10 +9,9 @@ public class InteractableSlideItem extends SlideItem {
 
     private final SlideItem childItem;
     private final Command command;
-    private Rectangle boundingBox;
 
     public InteractableSlideItem(SlideItem childItem, Command command) {
-        super(childItem.getLevel());
+        super(childItem != null ? childItem.getLevel() : 0);
         this.childItem = childItem;
         this.command = command;
     }
@@ -37,9 +36,9 @@ public class InteractableSlideItem extends SlideItem {
         if (childItem == null) return;
 
         childItem.draw(x, y, scale, g, style, observer);
-        boundingBox =  childItem.getBoundingBox(); //Pas ik hier correct decorator toe? - tvht
+        boundingBox =  childItem.getBoundingBox();
 
-        //Teken bounding box voor debugging
+        //Draw bounding box
         if (boundingBox != null) {
             Color prev = g.getColor();
             ((Graphics2D) g).setStroke(new BasicStroke(2));
