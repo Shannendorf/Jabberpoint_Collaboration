@@ -1,0 +1,15 @@
+<!--
+Document Type Definition for JabberPoint Slide Shows
+$Id$
+-->
+<!ELEMENT slideshow (head,slide+)>
+<!ELEMENT head (title,theme?)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT slide (title, items)>
+<!ELEMENT items (text|image|action)*>
+<!ELEMENT text (#PCDATA)>
+<!ELEMENT image (#PCDATA)>
+<!ELEMENT action (text|image|action)+>
+<!ATTLIST text level CDATA #REQUIRED>
+<!ATTLIST image level CDATA #REQUIRED>
+<!ATTLIST action name CDATA #REQUIRED>
