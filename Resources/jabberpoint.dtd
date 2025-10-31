@@ -2,10 +2,10 @@
 Document Type Definition for JabberPoint Slide Shows
 $Id$
 -->
-<!ELEMENT slideshow (head,slide+)>
-<!ELEMENT head (title,theme?)>
+<!ELEMENT presentation (showtitle, slide+)>
+<!ELEMENT showtitle (#PCDATA)>
+<!ELEMENT slide (title, items+)>
 <!ELEMENT title (#PCDATA)>
-<!ELEMENT slide (title, items)>
 <!ELEMENT items (text|image|action)*>
 <!ELEMENT text (#PCDATA)>
 <!ELEMENT image (#PCDATA)>
