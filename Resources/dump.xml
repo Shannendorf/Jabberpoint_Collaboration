@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE presentation SYSTEM
+        "/home/shannen/Desktop/OU/Design For Change/Jabberpoint_afterCommand,Composite,Decorator,Facade/Jabberpoint_Collaboration/Resources/jabberpoint.dtd">
+<presentation>
+    <showtitle>Demo Presentation</showtitle>
+
+    <!-- Slide 1 -->
+    <slide>
+        <title>JabberPoint</title>
+        <items>
+            <text level="1">Het Java Presentatie Tool</text>
+            <text level="2">Copyright (c) 1996-2000: Ian Darwin</text>
+            <text level="2">Copyright (c) 2000-now:</text>
+            <text level="2">Gert Florijn en Sylvia Stuurman</text>
+            <text level="4">JabberPoint aanroepen zonder bestandsnaam</text>
+            <text level="4">laat deze presentatie zien</text>
+            <text level="1">Navigeren:</text>
+            <text level="3">Volgende slide: PgDn of Enter</text>
+            <text level="3">Vorige slide: PgUp of up-arrow</text>
+            <text level="3">Stoppen: q or Q</text>
+        </items>
+    </slide>
+
+    <!-- Slide 2 -->
+    <slide>
+        <title>Demonstratie van levels en stijlen</title>
+        <items>
+            <text level="1">Level 1</text>
+            <text level="2">Level 2</text>
+            <text level="1">Nogmaals level 1</text>
+            <text level="1">Level 1 heeft stijl nummer 1</text>
+            <text level="2">Level 2 heeft stijl nummer 2</text>
+            <text level="3">Zo ziet level 3 er uit</text>
+            <text level="4">En dit is level 4</text>
+        </items>
+    </slide>
+
+    <!-- Slide 3 -->
+    <slide>
+        <title>Demo slide extra feature</title>
+        <items>
+            <text level="1">To move around:</text>
+            <action name="next">
+                <action name="beep">
+                    <text level="2">Next Page</text>
+                </action>
+            </action>
+        </items>
+    </slide>
+
+    <!-- Slide 4 -->
+    <slide>
+        <title>De derde slide</title>
+        <items>
+            <text level="1">Om een nieuwe presentatie te openen,</text>
+            <text level="2">gebruik File-&gt;Open uit het menu.</text>
+            <text level="1"> </text>
+            <text level="1">Dit is het einde van de presentatie.</text>
+        </items>
+    </slide>
+</presentation>

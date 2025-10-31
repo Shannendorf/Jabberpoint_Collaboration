@@ -1,4 +1,4 @@
-import Application.JabberPointFacade;
+import DomainServices.JabberPointFacade;
 import UI.SlideViewerFrame;
 
 import javax.swing.JOptionPane;
@@ -33,7 +33,7 @@ public class JabberPoint {
 //			if (argv.length == 0) { // een demo presentatie
 //				Accessor.getDemoAccessor().loadFile(presentation, "");
 //			} else {
-				jabberPointFacade.loadFile("dump.xml");
+				jabberPointFacade.loadFile("Resources/dump.xml");
 			//}
 			jabberPointFacade.setSlideNumber(0);
 		} catch (IOException ex) {

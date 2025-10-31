@@ -1,6 +1,6 @@
 package UI;
 
-import Application.JabberPointFacade;
+import DomainServices.JabberPointFacade;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;

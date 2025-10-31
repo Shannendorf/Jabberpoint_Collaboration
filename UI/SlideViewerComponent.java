@@ -1,10 +1,8 @@
 package UI;
 
-import Application.JabberPointFacade;
-import Application.PresentationSubscriber;
-import Domain.InteractableSlideItem;
-import Domain.Slide;
-import Domain.SlideItem;
+import DomainServices.JabberPointFacade;
+import DomainServices.PresentationSubscriber;
+import Domain.Entities.Slide;
 
 import java.awt.Color;
 import java.awt.Font;

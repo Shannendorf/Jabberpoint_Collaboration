@@ -1,6 +1,6 @@
 package UI;
 
-import Application.JabberPointFacade;
+import DomainServices.JabberPointFacade;
 
 import java.awt.MenuBar;
 import java.awt.Frame;
@@ -45,7 +45,7 @@ public class MenuController extends MenuBar {
 	protected static final String VIEW = "View";
 	
 	protected static final String TESTFILE = "test.xml";
-	protected static final String SAVEFILE = "dump.xml";
+	protected static final String SAVEFILE = "Resources/dump.xml";
 	
 	protected static final String IOEX = "IO Exception: ";
 	protected static final String LOADERR = "Load Error";

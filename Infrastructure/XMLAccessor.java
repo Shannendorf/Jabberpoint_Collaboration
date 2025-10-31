@@ -1,8 +1,6 @@
 package Infrastructure;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Vector;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,8 +10,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import Application.*;
-import Domain.*;
+import Domain.Builders.InteractableSlideItemBuilder;
+import Domain.Commands.*;
+import Domain.Entities.*;
+import Domain.Factories.BitmapItemFactory;
+import Domain.Factories.OrdinarySlideFactory;
+import Domain.Factories.TextItemFactory;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -186,7 +188,7 @@ public class XMLAccessor extends Accessor {
             case "prev" -> new PreviousSlideCommand(presentation);
             case "first" -> new FirstSlideCommand(presentation);
             case "last" -> new LastSlideCommand(presentation);
-            case "beep" -> new PlaySoundCommand(presentation, "blip.wav");
+            case "beep" -> new PlaySoundCommand(presentation, "Resources/blip.wav");
             default -> null;
         };
     }

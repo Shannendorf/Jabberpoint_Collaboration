@@ -1,8 +1,8 @@
 package Infrastructure;
 
-import Domain.BitmapItem;
-import Domain.Presentation;
-import Domain.Slide;
+import Domain.Entities.BitmapItem;
+import Domain.Entities.Presentation;
+import Domain.Entities.Slide;
 
 /** Een ingebouwde demo-presentatie
  * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman

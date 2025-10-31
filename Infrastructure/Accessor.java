@@ -1,6 +1,6 @@
 package Infrastructure;
 
-import Domain.Presentation;
+import Domain.Entities.Presentation;
 
 import java.io.IOException;
 
