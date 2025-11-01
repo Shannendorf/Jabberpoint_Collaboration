@@ -10,7 +10,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import Domain.Builders.InteractableSlideItemBuilder;
+import Domain.Factories.InteractableSlideItemFactory;
 import Domain.Commands.*;
 import Domain.Entities.*;
 import Domain.Factories.BitmapItemFactory;
@@ -121,23 +121,31 @@ public class XMLAccessor extends Accessor {
             case "text" -> {
                 int level = parseLevel(element);
                 String content = element.getTextContent();
-                return new TextItemFactory().createSlideItem(content, level);
+
+                TextItemFactory textItemfactory = new TextItemFactory();
+                textItemfactory.setLevel(level);
+                textItemfactory.setContent(content);
+                return textItemfactory.createSlideItem();
             }
             case "image" -> {
                 int level = parseLevel(element);
                 String content = element.getTextContent();
-                return new BitmapItemFactory().createSlideItem(content, level);
+
+                BitmapItemFactory bitmapItemfactory = new BitmapItemFactory();
+                bitmapItemfactory.setLevel(level);
+                bitmapItemfactory.setContent(content);
+                return bitmapItemfactory.createSlideItem();
             }
             case "action" -> {
                 // Maak een interactief slide-item aan dat een of meerdere acties kan bevatten
-                InteractableSlideItemBuilder builder = new InteractableSlideItemBuilder(presentation);
+                InteractableSlideItemFactory factory = new InteractableSlideItemFactory(presentation);
                 CompositeCommand compositeCommand = new CompositeCommand();
 
                 // Verzamel alle geneste actions en vind de basis-slideitem (tekst of afbeelding)
-                collectActionsAndBase(element, builder, compositeCommand, presentation);
-                builder.setCommand(compositeCommand);
+                collectActionsAndBase(element, factory, compositeCommand, presentation);
+                factory.setCommand(compositeCommand);
 
-                return builder.createSlideItem();
+                return factory.createSlideItem();
             }
 
             default -> {
@@ -151,7 +159,7 @@ public class XMLAccessor extends Accessor {
      * Recursieve methode die geneste <action>-elementen doorloopt,
      * hun commando’s verzamelt en het basisitem identificeert.
      */
-    private void collectActionsAndBase(Element element, InteractableSlideItemBuilder builder, CompositeCommand compositeCommand, Presentation presentation) {
+    private void collectActionsAndBase(Element element, InteractableSlideItemFactory factory, CompositeCommand compositeCommand, Presentation presentation) {
 
         // Lees de 'name'-attributen van action en map naar Command
         String actionName = element.getAttribute("name");
@@ -170,11 +178,11 @@ public class XMLAccessor extends Accessor {
 
             // Indien opnieuw een <action>, ga recursief verder
             if ("action".equalsIgnoreCase(tag)) {
-                collectActionsAndBase(childElement, builder, compositeCommand, presentation);
+                collectActionsAndBase(childElement, factory, compositeCommand, presentation);
             } else {
                 // Anders is dit het basis SlideItem (bv. <text> of <image>)
                 SlideItem base = createSlideItem(presentation, childElement);
-                builder.setBaseItem(base);
+                factory.setBaseItem(base);
             }
         }
     }

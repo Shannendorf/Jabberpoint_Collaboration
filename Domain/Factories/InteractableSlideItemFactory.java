@@ -1,11 +1,11 @@
-package Domain.Builders;
+package Domain.Factories;
 
 import Domain.Commands.Command;
 import Domain.Entities.InteractableSlideItem;
 import Domain.Entities.Presentation;
 import Domain.Entities.SlideItem;
 
-public class InteractableSlideItemBuilder {
+public class InteractableSlideItemFactory implements SlideItemFactory{
 
 	Command command;
 	Presentation presentation;
@@ -14,7 +14,7 @@ public class InteractableSlideItemBuilder {
     /**
      * Ctor
      */
-	public InteractableSlideItemBuilder(Presentation presentation) {
+	public InteractableSlideItemFactory(Presentation presentation) {
         this.presentation = presentation;
 	}
 
@@ -35,7 +35,8 @@ public class InteractableSlideItemBuilder {
     /**
      * Maak Interactable Slide Item aan
      */
-	public SlideItem createSlideItem() {
-		return new InteractableSlideItem(baseItem, command);
-	}
+    @Override
+    public SlideItem createSlideItem() {
+        return new InteractableSlideItem(baseItem, command);
+    }
 }
