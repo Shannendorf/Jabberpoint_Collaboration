@@ -1,5 +1,7 @@
 package DomainServices;
 
+import Domain.Commands.NextSlideCommand;
+import Domain.Commands.PreviousSlideCommand;
 import Domain.Factories.PresentationFactory;
 import Domain.Entities.Presentation;
 import Domain.Entities.Slide;
@@ -28,11 +30,13 @@ public class JabberPointFacade {
     }
 
     public void nextSlide() {
-        this.presentation.nextSlide();
+        var command = new NextSlideCommand(this.presentation);
+        command.execute();
     }
 
     public void previousSlide() {
-        this.presentation.prevSlide();
+        var command = new PreviousSlideCommand(this.presentation);
+        command.execute();
     }
 
     public Slide getCurrentSlide() {

@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE presentation SYSTEM
-        "/home/shannen/Desktop/OU/Design For Change/Jabberpoint_afterCommand,Composite,Decorator,Facade/Jabberpoint_Collaboration/Resources/jabberpoint.dtd">
+<!DOCTYPE presentation SYSTEM "jabberpoint.dtd">
 <presentation>
     <showtitle>Demo Presentation</showtitle>
 
