@@ -19,7 +19,7 @@ public class OrdinarySlideBuilder implements SlideBuilder {
     }
 
     /**
-     * Return instantie van de Oridnary Slide builder
+     * Return instantie van de Ordinary Slide builder
      */
     public static OrdinarySlideBuilder getSlideBuilder(){
         return new OrdinarySlideBuilder();
@@ -34,7 +34,7 @@ public class OrdinarySlideBuilder implements SlideBuilder {
     }
 
     /**
-     * Voer Item aan de slide toe
+     * Voeg Item aan de slide toe
      */
     @Override
     public void addItem(SlideItem item) {

@@ -15,7 +15,7 @@ public class JabberPointFacade {
     private PresentationAccessorService presentationAccessor;
 
     public JabberPointFacade() {
-        this.presentation = PresentationFactory.createPresentation(); //PresentationFactory.createPresentation();
+        this.presentation = PresentationFactory.createPresentation();
         this.presentationAccessor = new PresentationAccessorService(new XMLAccessor());
 
         Style.createStyles();

@@ -24,13 +24,14 @@ public class InteractableSlideItem extends SlideItem {
         return childItem;
     }
 
+    // geef de bounding box
     @Override
     public Rectangle getBoundingBox() {
         if (childItem == null) return new Rectangle(0, 0, 0, 0);
         return childItem.getBoundingBox();
     }
 
-
+    // teken het Slide Item
     @Override
     public void draw(int x, int y, float scale, Graphics g, Style style, ImageObserver observer) {
         if (childItem == null) return;
@@ -52,6 +53,7 @@ public class InteractableSlideItem extends SlideItem {
         return boundingBox != null && boundingBox.contains(x, y);
     }
 
+    // voert command uit als er een command is om uit te voeren
     public void onClick() {
         if (command != null) {
             command.execute();

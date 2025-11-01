@@ -86,10 +86,6 @@ public class TextItem extends SlideItem {
     }
 
 
-
-
-
-
     private List<TextLayout> getLayouts(Graphics g, Style s, float scale) {
 		List<TextLayout> layouts = new ArrayList<TextLayout>();
 		AttributedString attrStr = getAttributedString(s, scale);

@@ -59,6 +59,7 @@ public class SlideViewerComponent extends JComponent implements PresentationSubs
         addMouseListener(mouseHandler);
 	}
 
+// hsndelt de muisklik af en geeft de kliklocatie door aan de facade 
     private void handleMouseClick(MouseEvent e) {
         this.jabberPointFacade.handleSlideClick(e.getX(), e.getY());
     }
@@ -82,6 +83,7 @@ public class SlideViewerComponent extends JComponent implements PresentationSubs
 		slide.draw(g, area, this);
 	}
 
+// Hertekent de slide wanneer de publisher heeft aangegeven dat dit nodig is
 	public void notifySlideChange() {
 		this.slide = jabberPointFacade.getCurrentSlide();
 		repaint();

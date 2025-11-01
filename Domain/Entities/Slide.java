@@ -82,6 +82,7 @@ public class Slide {
 		return Math.min(((float)area.width) / ((float)WIDTH), ((float)area.height) / ((float)HEIGHT));
 	}
 
+	// controleert of op een interactableSlideItem geklikt is en zet het uitvoeren van bijbehorende commands in gang
     public void handleClick(int x, int y) {
         for (SlideItem item : items) {
             if (item instanceof InteractableSlideItem clickable) {

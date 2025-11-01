@@ -28,8 +28,6 @@ public class KeyController extends KeyAdapter {
 			case KeyEvent.VK_DOWN:
 			case KeyEvent.VK_ENTER:
 			case '+':
-                //Mogelijke implementatie - Tibo
-                //executeCommand(new NextSlideCommand(presentation));
 				jabberPointFacade.nextSlide();
 				break;
 			case KeyEvent.VK_PAGE_UP:
@@ -45,8 +43,4 @@ public class KeyController extends KeyAdapter {
 				break;
 		}
 	}
-
-//    private void executeCommand(PresentationCommand command) {
-//        command.execute();
-//    }
 }
